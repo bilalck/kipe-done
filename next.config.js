@@ -4,7 +4,18 @@ const withPWA = require('@ducanh2912/next-pwa').default;
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  output: 'standalone'
+  output: 'standalone',
+  compiler: {
+    styledComponents: true
+  },
+  transpilePackages: ['framer-motion'],
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'framer-motion': require.resolve('framer-motion')
+    };
+    return config;
+  }
 };
 
 const pwaConfig = {
