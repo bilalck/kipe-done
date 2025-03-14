@@ -8,11 +8,34 @@ const nextConfig = {
   compiler: {
     styledComponents: true
   },
+  experimental: {
+    serverActions: true
+  },
   transpilePackages: ['framer-motion'],
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'framer-motion': require.resolve('framer-motion')
+      '@/components': require('path').resolve('./src/components')
+    };
+    config.module = {
+      ...config.module,
+      exprContextCritical: false
+    };
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false
+    };
+    if (config.module.rules) {
+      config.module.rules.push({
+        test: /framer-motion/,
+        sideEffects: false
+      });
+    }
+    config.optimization = {
+      ...config.optimization,
+      sideEffects: true
     };
     return config;
   }
